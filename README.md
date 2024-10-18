@@ -7,15 +7,7 @@ This project is heavily inspired by
 
 * Pure Lua implementation
 * Much smaller codebase
-* Fewer dependencies and features
-
-The only dependency is the configured [basic fzf plugin](https://github.com/junegunn/fzf) that is usually installed with the `fzf` package. You can use the following command to check that the basic plugin works:
-
-```vim
-
-:call fzf#run()
-
-```
+* No dependencies
 
 ## Installation
 
@@ -47,7 +39,7 @@ The default configuration:
 local config = {
     options = {},
     layout = {
-        tmux = '-p90%,60%',
+        tmux = { '-p90%,60%' },
         window = { width = 0.9, height = 0.6 },
     },
 }
@@ -56,7 +48,7 @@ local config = {
 Settings can be changed using the `setup` function that accepts a table with the following fields:
 * `options` contains options for `fzf`.
 * `layout` configures the size and position of the `fzf` window.
-  * `tmux` contains the arguments to pass to the `fzf-tmux` command.
+  * `tmux` contains additional options for `fzf-tmux`.
   * `window` contains the `width` and `height` of the popup window in the range from `0.0` to `1.0`.
 
 The plugin uses a tmux popup when used in a tmux session. The tmux popup can be disabled by setting a `layout` that only has `window` set:
