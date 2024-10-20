@@ -21,6 +21,14 @@ local process_output = function(output, args)
 	end
 end
 
+local quote = function(options)
+	local result = {}
+	for i, v in ipairs(options) do
+		result[i] = string.format("'%s'", string.gsub(v, "'", "'\\''"))
+	end
+	return result
+end
+
 local build_cmd = function(cmd, args)
 	local fzf = table.concat(cmd, ' ')
 
@@ -52,7 +60,7 @@ local fzf_term = function(args, c)
 
 	local tempfile = vim.fn.tempname()
 	local cmd = { 'fzf' }
-	vim.list_extend(cmd, c.options)
+	vim.list_extend(cmd, quote(c.options))
 	vim.list_extend(cmd, { '>', tempfile })
 
 	vim.fn.termopen(build_cmd(cmd, args), {
@@ -74,8 +82,8 @@ end
 
 local fzf_tmux = function(args, c)
 	local cmd = { 'fzf-tmux' }
-	vim.list_extend(cmd, c.layout.tmux)
-	vim.list_extend(cmd, c.options)
+	vim.list_extend(cmd, quote(c.layout.tmux))
+	vim.list_extend(cmd, quote(c.options))
 
 	local result = vim.system({ 'sh', '-c', build_cmd(cmd, args) }, { text = true }):wait()
 	if result.code == 130 then
